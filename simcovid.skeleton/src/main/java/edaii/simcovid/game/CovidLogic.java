@@ -36,8 +36,17 @@ public class CovidLogic {
                         if(existElement(n)){
                             if (covidList.get(n).getCovidLifeTime() == 0){
                                 newList.set(n, 2);
-                            }else{
-                                covidList.get(n).setCovidLifeTime(covidList.get(n).getCovidLifeTime()-1);
+                            }else{//PROBABILIDAD DE MUERTE
+                                if(covidList.get(n).getCovidLifeTime() == 7){
+                                    if((int) (Math.random()*10+1) == parameters.porcentToDead ){
+                                        newList.set(n, 5);
+                                    }else{
+                                        covidList.get(n).setCovidLifeTime(covidList.get(n).getCovidLifeTime()-1);
+                                    }
+                                }
+                                else{
+                                    covidList.get(n).setCovidLifeTime(covidList.get(n).getCovidLifeTime()-1);
+                                }
                             }
                         }else{
                             covidList.set(n, new CovidLife(n,parameters.lifetimeInDays));
@@ -47,24 +56,73 @@ public class CovidLogic {
                     if( (int) (Math.random()*10+1) <= parameters.transmissionPercent ){
 
                         if((int) (Math.random()*4+1) == 1){//derecha
-                            if(n+1>0 && n+1<grid.size() && newList.get(n+1)!=2){
-                                newList.set(n+1, 1);
+                            if(n+1>0 && n+1<grid.size() && newList.get(n+1)!=2 && newList.get(n+1)!=5){
+                                if(newList.get(n+1) == 4){//revisa si tiene mascarilla
+                                    if((int) (Math.random()*10+1) <= parameters.transmissionPercentMask){
+                                        newList.set(n+1, 1);
+                                    }
+                                }else{
+                                    newList.set(n+1, 1);
+                                }
+
                             }
                         }else if((int) (Math.random()*4+1) ==2){//izquierda
-                            if(n-1>0 && n-1<grid.size() && newList.get(n-1)!=2){
-                                newList.set(n-1, 1);
+                            if(n-1>0 && n-1<grid.size() && newList.get(n-1)!=2 && newList.get(n-1)!=5){
+                                if(newList.get(n-1) == 4){//revisa si tiene mascarilla
+                                    if((int) (Math.random()*10+1) <= parameters.transmissionPercentMask){
+                                        newList.set(n-1, 1);
+                                    }
+                                }else{
+                                    newList.set(n-1, 1);
+                                }
                             }
                         }else if((int) (Math.random()*4+1) == 3){//abajo
-                            if(n+columns>0 && n+columns<grid.size() && newList.get(n+columns)!=2){
-                                newList.set(n+columns, 1);
+                            if(n+columns>0 && n+columns<grid.size() && newList.get(n+columns)!=2 && newList.get(n+columns)!=5){
+                                if(newList.get(n+columns) == 4){//revisa si tiene mascarilla
+                                    if((int) (Math.random()*10+1) <= parameters.transmissionPercentMask){
+                                        newList.set(n+columns, 1);
+                                    }
+                                }else{
+                                    newList.set(n+columns, 1);
+                                }
                             }
                         }
                         else if((int) (Math.random()*4+1) == 4){//arriba
-                            if(n-columns>0 && n-columns<grid.size() && newList.get(n-columns)!=2){
-                                newList.set(n-columns, 1);
+                            if(n-columns>0 && n-columns<grid.size() && newList.get(n-columns)!=2 && newList.get(n-columns)!=5){
+                                if(newList.get(n-columns) == 4){//revisa si tiene mascarilla
+                                    if((int) (Math.random()*10+1) <= parameters.transmissionPercentMask){
+                                        newList.set(n-columns, 1);
+                                    }
+                                }else{
+                                    newList.set(n-columns, 1);
+                                }
                             }
                         }
                     }
+                }else if(grid.get(n) == 4){
+                    newList.set(n, 4);
+                }else if(grid.get(n) == 0) {
+                    if(n+1<grid.size()){//revisión derecha
+                        if(newList.get(n+1)==1 ){
+                            newList.set(n, 3);
+                        }
+                    }
+                    if(n-1>0){
+                        if(newList.get(n-1)==1){
+                            newList.set(n, 3);
+                        }
+                    }
+                    if(n-columns>0){
+                        if(newList.get(n-columns)==1){
+                            newList.set(n, 3);
+                        }
+                    }
+                    if(n+columns<grid.size()){
+                        if(newList.get(n+columns)==1){
+                            newList.set(n, 3);
+                        }
+                    }
+
                 }
 
             });
