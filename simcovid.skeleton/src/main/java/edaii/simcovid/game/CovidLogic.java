@@ -52,7 +52,6 @@ public class CovidLogic {
                             covidList.set(n, new CovidLife(n,parameters.lifetimeInDays));
                         }
                     }
-
                     if( (int) (Math.random()*10+1) <= parameters.transmissionPercent ){
 
                         if((int) (Math.random()*4+1) == 1){//derecha

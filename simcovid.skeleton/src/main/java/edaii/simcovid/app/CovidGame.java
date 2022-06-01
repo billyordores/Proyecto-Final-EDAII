@@ -12,7 +12,7 @@ public class CovidGame {
 
     public static final int ROWS = 20;
     public static final int COLUMNS = 20;
-    public static final int MSECONDS_PER_DAY = 50;
+    public static final int MSECONDS_PER_DAY = 300;
     public static final int VIRUS_TRANSMISSION_PERCENT = 5;
     public static final int VIRUS_TRANSMISSION_PERCENT_MASK = 2;
     public static final int VIRUS_TIMELIFE_DAYS = 14;
