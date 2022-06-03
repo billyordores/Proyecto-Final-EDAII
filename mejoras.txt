@@ -1,0 +1,60 @@
+Se agragó una clase llamada "CovidLife"
+-Que realiza el conteo de vida cuando una persona esta contagiada, se le pasa un Index y la cantidad de dias que estara enfermo.
+
+Mascarilla
+-A la hora de contagiar, se revisa si la selda a quien contagia, tiene mascarilla, si la tiene aplica un porcentanje de acuerdo a TRANSMISSIONPERCENTMASK
+if(newList.get(n+1) == 4){//revisa si tiene mascarilla
+                                    if((int) (Math.random()*10+1) <= parameters.transmissionPercentMask){
+                                        newList.set(n+1, 1);
+                                    }
+                                }else{
+                                    newList.set(n+1, 1);
+                                }
+
+
+
+Muerte
+Segun el covid, la mayoria de personas, suele morir en el proceso de superación del coivid, por eso se establece que si el tiempo de recuperación es 7; se aplica una probabilidad con el paramtero PORCENTTODEAD.
+if(covidList.get(n).getCovidLifeTime() == 7){
+                                    if((int) (Math.random()*10+1) == parameters.porcentToDead ){
+                                        newList.set(n, 5);
+                                    }else{
+                                        covidList.get(n).setCovidLifeTime(covidList.get(n).getCovidLifeTime()-1);
+                                    }
+                                }
+Rodeado
+-Se pone en la posición de los que no estan contagiados es decir en index "0", luego verifica a su al rededor, derecha, izquierda, arriba y abajo. Y si hay algun enfermo al rededor, cambia a estado preocupado. Todo a traves de una "if"
+else if(grid.get(n) == 0) {
+                    if(n+1<grid.size()){//revisión derecha
+                        if(newList.get(n+1)==1 ){
+                            newList.set(n, 3);
+                        }
+                    }
+                    if(n-1>0){
+                        if(newList.get(n-1)==1){
+                            newList.set(n, 3);
+                        }
+                    }
+                    if(n-columns>0){
+                        if(newList.get(n-columns)==1){
+                            newList.set(n, 3);
+                        }
+                    }
+                    if(n+columns<grid.size()){
+                        if(newList.get(n+columns)==1){
+                            newList.set(n, 3);
+                        }
+                    }
+
+                }
+Detectar el fin de juego
+-Se detecta el final del juego cuando no hay ningun enfermo, debido a que si no hay enfermos, no se podra contagiar más.
+-Revisa que la lista que se le pasa al metodo "covidLogic.advanceDay" no tenga dentro un 1, sino no lo tiene hace un break y finaliza el juego.
+private static boolean timeToEnd(List<Integer> grid){
+        if(grid.contains(1)){
+            return true;
+        }else{
+            System.out.println("Termino el programa");
+            return false;
+        }
+    }
