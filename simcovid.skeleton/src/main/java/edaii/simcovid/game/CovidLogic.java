@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 public class CovidLogic {
@@ -21,13 +22,58 @@ public class CovidLogic {
         this.parameters = parameters;
     }
 //
-    public List<Integer> advanceDay(List<Integer> grid, int dayTime, int rows, int columns) {
+    public List<Integer> advanceDay(List<Integer> grid, int dayTime, int rows, int columns, List<CovidLife> covidLife) {
             if(newList.isEmpty()){
                 IntStream.range(0, grid.size()).forEach(n -> newList.add(n, 0));
                 IntStream.range(0, grid.size()).forEach(n -> covidList.add( null));
             }
 
-            IntStream.range(0, grid.size()).forEach(n -> {
+            /**List<Integer> name = grid.stream().map(n -> {
+                if(n==0){
+
+                }
+            }).collect(Collectors.toList());*/
+
+            return IntStream.range(0, grid.size()).mapToObj( i -> {
+                if(grid.get(i) == 0){
+                    if(i+1<grid.size()){
+                        if(grid.get(i+1) == 1 ){
+                            if((int) (Math.random()*10+1) == parameters.transmissionPercent){
+                                return 1;
+                            }else{
+                                return 0;
+                            }
+                        }
+                    }
+                    if(i-1>0){
+                        if(grid.get(i-1) == 1 ){
+                            if((int) (Math.random()*10+1) == parameters.transmissionPercent){
+                                return 1;
+                            }else{
+                                return 0;
+                            }
+                        }
+                    }
+                }else if(grid.get(i) == 1){
+                    if(covidLife.get(i).getIndex() == -1){
+                        covidLife.get(i).setIndex(i);
+                        covidLife.get(i).setCovidLifeTime(14);
+                    }else{
+                        if(covidLife.get(i).getCovidLifeTime() == 0){
+                            return 2;
+                        }else{
+                            covidLife.get(i).setCovidLifeTime(covidLife.get(i).getCovidLifeTime() -1);
+                        }
+
+                    }
+                }
+                return 0;
+            }).collect(Collectors.toList());
+
+
+
+
+            /**IntStream.range(0, grid.size()).forEach(n -> {
                 if(grid.get(n) == 1){
                     newList.set(n, 1);
                     if(covidList.isEmpty()){
@@ -126,7 +172,7 @@ public class CovidLogic {
 
             });
             newList.stream().forEach(n -> System.out.println(n));
-            return newList;
+            return newList;*/
     }
     public void changeAdvance(int value){
         System.out.println();

@@ -33,13 +33,15 @@ public class CovidGame {
         final CovidLogic covidLogic = new CovidLogic(virusParameters);
 
         List<Integer> population = initializePopulation(ROWS, COLUMNS);
+        List<CovidLife> covidLifeCell = initializePopulation2(ROWS*COLUMNS);
 
         do{
-            population = covidLogic.advanceDay(population, MSECONDS_PER_DAY , ROWS,COLUMNS);
+            population = covidLogic.advanceDay(population, MSECONDS_PER_DAY , ROWS,COLUMNS, covidLifeCell);
 
             final List<Integer> cellStates = population
                     .stream()
                     .collect(Collectors.toUnmodifiableList());
+
             game.setCellStates(cellStates);
 
             Thread.sleep(MSECONDS_PER_DAY);
@@ -49,14 +51,18 @@ public class CovidGame {
     private static List<Integer> initializePopulation(int rows, int columns) {
         return IntStream.range(0, rows*columns)
                 .mapToObj(n ->{
-                        if(n==10 ||n==14){
-                            return n=1;
-                        }else if(n==20 || n==30 || n==15|| n==18){
-                            return n=4;
-                        }else{
-                            return n=0;
-                        }
+                    if(n==10 ||n==14){
+                        return 1;
+                    }else if(n==20 || n==30 || n==15|| n==18){
+                        return 4;
+                    }else{
+                        return 0;
+                    }
                 }).toList();
+    }
+    private static List<CovidLife> initializePopulation2(int number) {
+        return IntStream.range(0, number)
+                .mapToObj(n -> new CovidLife(-1, -1)).toList();
     }
     private static boolean timeToEnd(List<Integer> grid){
         if(grid.contains(1)){
